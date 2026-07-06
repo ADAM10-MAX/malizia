@@ -2,6 +2,18 @@
    MALIZIA — Product detail logic
    ========================================================================== */
 
+// 🛠️ دالة التطهير المفقودة لمنع أخطاء الـ ReferenceError وحماية الموقع
+function escapeHtml(text) {
+  if (!text) return '';
+  return text
+    .toString()
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 function getIdFromUrl() {
   return new URLSearchParams(window.location.search).get("id");
 }
@@ -56,8 +68,9 @@ async function loadProduct() {
 
   let product = null;
 
+  // فحص وضع الديمو أو جلب البيانات الحية من Supabase
   if (!isDemoMode()) {
-    const { data, error } = await sb.from("products").select("*").eq("id", id).single();
+    const { data, error } = await supabase.from("products").select("*").eq("id", id).single();
     if (error) {
       console.error(error);
     } else {
