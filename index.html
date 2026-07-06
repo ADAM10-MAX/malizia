@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ar" dir="ltr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Malizia — Premium Home Decor</title>
+<meta name="description" content="Malizia — ديكور منزلي راقٍ: مزهريات، مصابيح، وسائد وقطع مختارة بعناية." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap bar">
+    <a href="index.html" class="logo">MALI<span>ZIA</span></a>
+    <nav class="nav-links">
+      <a href="index.html#shop">Shop</a>
+      <a href="index.html#about">About</a>
+    </nav>
+    <div style="display:flex; gap:10px; align-items:center;">
+      <a href="cart.html" class="icon-btn" aria-label="Cart">
+        🛍️
+        <span class="cart-count" data-cart-count>0</span>
+      </a>
+      <a href="login.html" class="icon-btn" aria-label="Account">👤</a>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap" style="position:relative;">
+    <div class="hero-num">01</div>
+    <p class="eyebrow">Collection N°06 — 2026</p>
+    <h1 class="display-1">Objects for<br/>a quieter home.</h1>
+    <p class="lede">قطع ديكور منزلي مختارة بعناية — مزهريات، مصابيح، ومرايا مصنوعة بحرفية، لِمساحة تعكس ذوقك الهادئ.</p>
+    <div style="margin-top:28px;">
+      <a href="#shop" class="btn">تسوق المجموعة</a>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" id="shop" style="padding: 20px 28px 60px;">
+  <div class="section-head">
+    <h2 class="display-2">All Pieces</h2>
+    <span class="eyebrow" id="product-count-label">—</span>
+  </div>
+  <div id="product-grid" class="grid" aria-live="polite">
+    <!-- product cards injected here -->
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span class="foot-note">© 2026 MALIZIA — Premium Home Decor</span>
+    <span class="foot-note">Made with care · Rabat / Tanger</span>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/demo-data.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

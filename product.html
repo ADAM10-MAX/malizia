@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ar" dir="ltr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Malizia — Product</title>
+<link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap bar">
+    <a href="index.html" class="logo">MALI<span>ZIA</span></a>
+    <nav class="nav-links">
+      <a href="index.html#shop">Shop</a>
+      <a href="index.html#about">About</a>
+    </nav>
+    <div style="display:flex; gap:10px; align-items:center;">
+      <a href="cart.html" class="icon-btn" aria-label="Cart">
+        🛍️
+        <span class="cart-count" data-cart-count>0</span>
+      </a>
+      <a href="login.html" class="icon-btn" aria-label="Account">👤</a>
+    </div>
+  </div>
+</header>
+
+<section class="wrap" style="padding: 40px 28px 80px;">
+  <a href="index.html" class="link-muted" style="display:inline-block; margin-bottom:28px;">← Back to shop</a>
+  <div id="product-root" class="pd-grid">
+    <!-- injected -->
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span class="foot-note">© 2026 MALIZIA — Premium Home Decor</span>
+    <span class="foot-note">Made with care · Rabat / Tanger</span>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/demo-data.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/product.js"></script>
+</body>
+</html>

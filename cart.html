@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ar" dir="ltr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Malizia — Cart</title>
+<link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap bar">
+    <a href="index.html" class="logo">MALI<span>ZIA</span></a>
+    <nav class="nav-links">
+      <a href="index.html#shop">Shop</a>
+    </nav>
+    <a href="login.html" class="icon-btn" aria-label="Account">👤</a>
+  </div>
+</header>
+
+<section class="wrap" style="padding: 40px 28px 80px; max-width: 720px;">
+  <h1 class="display-2" style="margin-bottom:28px;">سلة المشتريات</h1>
+  <div id="cart-root"></div>
+
+  <div id="checkout-panel" style="display:none; margin-top:36px; border-top:1px solid var(--line); padding-top:28px;">
+    <h3 style="margin-bottom:18px;">إتمام الطلب</h3>
+    <p class="field-hint" style="margin-bottom:20px;">
+      عمر معطياتك وسنتصل بك لتأكيد الطلب. الدفع عند الاستلام.
+    </p>
+    <div id="checkout-notice" class="notice"></div>
+    <form id="checkout-form">
+      <div class="field">
+        <label for="co-name">الاسم الكامل</label>
+        <input type="text" id="co-name" placeholder="مثلا: محمد أمين" required />
+      </div>
+      <div class="field">
+        <label for="co-phone">رقم الهاتف</label>
+        <input type="tel" id="co-phone" placeholder="06XXXXXXXX" required pattern="[0-9+ ]{9,15}" />
+      </div>
+      <button type="submit" class="btn btn-brass btn-block" id="checkout-btn">تأكيد الطلب</button>
+    </form>
+  </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/cart.js"></script>
+<script>
+  let currentTotal = 0;
+
+  function renderCartPage() {
+    const cart = getCart();
+    const root = document.getElementById("cart-root");
+    const checkoutPanel = document.getElementById("checkout-panel");
+
+    if (!cart.length) {
+      root.innerHTML = `<div class="empty-state">السلة فارغة. <a href="index.html" class="link-muted">تصفح المنتوجات</a></div>`;
+      checkoutPanel.style.display = "none";
+      return;
+    }
+
+    let total = 0;
+    root.innerHTML = cart
+      .map((item) => {
+        total += item.price * item.qty;
+        return `
+        <div class="admin-product-row">
+          <div class="thumb"><img src="${item.image_url}" alt=""/></div>
+          <div>
+            <div class="name">${item.title}</div>
+            <div class="foot-note">الكمية: ${item.qty}</div>
+          </div>
+          <div class="price">${(item.price * item.qty).toLocaleString()}</div>
+        </div>`;
+      })
+      .join("") +
+      `<div class="admin-product-row" style="font-weight:600;">
+         <div>المجموع</div>
+         <div class="price" style="margin-left:auto;">${total.toLocaleString()} MAD</div>
+       </div>
+       <a href="index.html" class="btn btn-outline" style="margin-top:20px;">متابعة التسوق</a>`;
+
+    currentTotal = total;
+    checkoutPanel.style.display = "block";
+  }
+
+  function showCheckoutNotice(msg, isError = false) {
+    const n = document.getElementById("checkout-notice");
+    n.textContent = msg;
+    n.className = "notice show" + (isError ? " error" : "");
+  }
+
+  async function handleCheckout(e) {
+    e.preventDefault();
+    const name = document.getElementById("co-name").value.trim();
+    const phone = document.getElementById("co-phone").value.trim();
+    const cart = getCart();
+
+    if (!cart.length) return;
+
+    const btn = document.getElementById("checkout-btn");
+    btn.disabled = true;
+    btn.textContent = "جارٍ التأكيد…";
+
+    const orderPayload = {
+      customer_name: name,
+      phone: phone,
+      items: cart,
+      total: currentTotal,
+    };
+
+    try {
+      if (isDemoMode()) {
+        await new Promise((r) => setTimeout(r, 500));
+        console.log("Demo order (not saved — Supabase not configured):", orderPayload);
+      } else {
+        const { error } = await sb.from("orders").insert(orderPayload);
+        if (error) throw error;
+      }
+
+      showCheckoutNotice("تم استلام طلبك بنجاح! سنتصل بك على هذا الرقم لتأكيد الطلب قريبا.");
+      sessionStorage.removeItem(CART_KEY);
+      updateCartBadge();
+      document.getElementById("checkout-form").reset();
+      document.getElementById("cart-root").innerHTML = `<div class="empty-state">تم إرسال طلبك ✅ — سنتواصل معك قريبا.</div>`;
+    } catch (err) {
+      console.error(err);
+      showCheckoutNotice("حدث خطأ أثناء إرسال الطلب: " + (err.message || err), true);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = "تأكيد الطلب";
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    renderCartPage();
+    document.getElementById("checkout-form").addEventListener("submit", handleCheckout);
+  });
+</script>
+</body>
+</html>

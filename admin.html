@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ar" dir="ltr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Malizia — Admin Dashboard</title>
+<link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="admin-shell">
+
+<div class="admin-header">
+  <div class="wrap">
+    <div>
+      <span class="admin-badge">Malizia · Admin</span>
+      <div style="font-family: var(--font-display); font-size:22px; margin-top:4px;">Dashboard</div>
+    </div>
+    <div style="display:flex; align-items:center; gap:16px;">
+      <span id="admin-email" class="foot-note" style="color:var(--stone); opacity:.7;"></span>
+      <button id="logout-btn" class="btn btn-outline" style="border-color:var(--stone); color:var(--stone);">Sign out</button>
+    </div>
+  </div>
+</div>
+
+<div class="wrap admin-layout">
+  <div class="panel">
+    <h3>Add a new product</h3>
+    <form id="product-form">
+
+      <div class="field">
+        <label for="p-title">Product title</label>
+        <input type="text" id="p-title" placeholder="e.g. Amphora Vase — Sable" required />
+      </div>
+
+      <div class="field">
+        <label for="p-price">Price (MAD)</label>
+        <input type="number" id="p-price" min="0" step="1" placeholder="420" required />
+      </div>
+
+      <div class="field">
+        <label>Product image</label>
+        <div class="upload-zone" id="upload-zone">
+          <input type="file" id="p-image" accept="image/*" style="display:none;" />
+          <span id="upload-label">📷 اضغط لرفع صورة المنتوج</span>
+        </div>
+        <div class="upload-preview" id="upload-preview">
+          <div class="frame"><img id="preview-img" alt="Preview" /></div>
+          <div class="badge-bg" id="bg-badge" style="display:none;">
+            <span class="dot"></span> تمت إزالة الخلفية تلقائيا (محاكاة AI)
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>AI marketing description (Arabic)</label>
+        <button type="button" id="gen-desc-btn" class="btn btn-outline btn-block" style="margin-bottom:10px;">
+          ✨ توليد وصف تسويقي بالذكاء الاصطناعي
+        </button>
+        <div class="ai-box" id="ai-desc-box">اضغط الزر أعلاه بعد كتابة عنوان المنتوج لتوليد وصف تلقائي.</div>
+      </div>
+
+      <button type="submit" class="btn btn-brass btn-block" id="publish-btn">Publish product</button>
+      <div class="field-error" id="form-error"></div>
+    </form>
+  </div>
+
+  <div>
+    <div class="panel" style="margin-bottom:24px;">
+      <h3>Overview</h3>
+      <div class="stat-row"><span>Total products</span><span id="stat-total">—</span></div>
+      <div class="stat-row"><span>Storage</span><span id="stat-storage">Supabase Storage</span></div>
+      <div class="stat-row"><span>Mode</span><span id="stat-mode">—</span></div>
+    </div>
+
+    <div class="panel" style="margin-bottom:24px;">
+      <h3>📞 الطلبات الجديدة</h3>
+      <div id="orders-list"></div>
+    </div>
+
+    <div class="panel">
+      <h3>Recent products</h3>
+      <div id="recent-products"></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/demo-data.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>
